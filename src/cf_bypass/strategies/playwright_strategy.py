@@ -134,7 +134,7 @@ class PlaywrightStrategy(BaseBypassStrategy):
                 response = page.goto(
                     url,
                     timeout=self._config.timeout * 1_000,
-                    wait_until="networkidle",
+                    wait_until="domcontentloaded",  # networkidle never fires on CF sites
                 )
 
                 self._wait_for_challenge(page)

@@ -68,15 +68,43 @@ engine.fetch(url)
 
 ---
 
+## Why this exists
+
+Many websites use **Cloudflare Bot Management** to block automated HTTP clients.
+A raw `requests.get()` call returns a `403` with a JS challenge page instead of
+the real content. This toolkit solves that by either mimicking a real browser's
+TLS fingerprint (CloudScraper) or running an actual browser that executes
+Cloudflare's JavaScript challenge and waits for it to clear (Playwright /
+UndetectedChrome).
+
+Typical use cases: data pipelines that ingest public market data, price
+monitoring systems, CI/CD health checks against your own CF-protected staging
+environments, and automated QA against Cloudflare-fronted APIs.
+
+---
+
 ## Installation
 
 ```bash
 git clone https://github.com/prakharbhawsar1/cloudflare-bypass-toolkit
 cd cloudflare-bypass-toolkit
-python3.12 -m venv .venv && source .venv/bin/activate
+
+# 1. Create and activate a Python 3.12 virtual environment
+python3.12 -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+
+# 2. Install all dependencies
 pip install -r requirements.txt
 
-# Install Playwright browsers (only needed for the Playwright strategy)
+# 3. Install the package itself in editable mode
+#    This makes `cf_bypass` importable from anywhere inside the venv.
+#    Editable mode (-e) means code changes in src/ take effect immediately
+#    without needing to re-run pip install.
+pip install -e .
+
+# 4. Download Playwright's Chromium browser binary
+#    Required only if you intend to use the Playwright or UndetectedChrome strategy.
+#    This is a one-time download (~250 MB).
 playwright install chromium
 ```
 
@@ -176,13 +204,14 @@ mgr.clear()
 
 ## Running tests
 
-### Setup
+### Setup (if not done already)
 
 ```bash
 python3.12 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-playwright install chromium   # only needed for Playwright strategy
+pip install -e .              # makes cf_bypass importable inside the venv
+playwright install chromium   # one-time browser download for Playwright strategy
 ```
 
 ### Unit tests (fast, no network, runs by default)
