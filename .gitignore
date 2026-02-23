@@ -39,6 +39,10 @@ htmlcov/
 # macOS
 .DS_Store
 
-# Env files
+# Env files — NEVER commit real credentials
 .env
 .env.*
+!.env.example
+
+# Local manual test script — never push (contains real URLs / debug output)
+local_test.py

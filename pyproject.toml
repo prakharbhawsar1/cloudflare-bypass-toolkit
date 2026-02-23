@@ -21,6 +21,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dependencies = [
+    "python-dotenv>=1.0.1",
     "cloudscraper>=1.2.71",
     "undetected-chromedriver>=3.5.5",
     "playwright>=1.45.0",
@@ -66,7 +67,10 @@ ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-v --tb=short"
+addopts = "-v --tb=short -m 'not integration'"
+markers = [
+    "integration: real network tests — run with: pytest -m integration",
+]
 
 [tool.coverage.run]
 source = ["src/cf_bypass"]

@@ -176,11 +176,35 @@ mgr.clear()
 
 ## Running tests
 
+### Setup
+
 ```bash
-pytest                        # all tests
-pytest -v tests/test_strategies.py   # specific module
-pytest --cov                  # with coverage report
+python3.12 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+playwright install chromium   # only needed for Playwright strategy
 ```
+
+### Unit tests (fast, no network, runs by default)
+
+```bash
+pytest                              # all unit tests
+pytest -v tests/test_strategies.py  # specific file
+pytest --cov                        # with coverage report
+```
+
+### Local manual testing
+
+```bash
+# Optional: copy .env.example → .env and add proxy credentials
+cp .env.example .env
+
+# Run against your own target
+python local_test.py
+```
+
+Edit `local_test.py` to set your target URL, strategy, and proxy.
+Set `HEADLESS = False` to watch the browser solve the challenge live.
 
 ```
 tests/
