@@ -1,5 +1,6 @@
 # Runtime dependencies
 python-dotenv>=1.0.1
+setuptools>=68.0.0   # required by undetected-chromedriver on Python 3.12 (distutils shim)
 cloudscraper>=1.2.71
 undetected-chromedriver>=3.5.5
 playwright>=1.45.0
